@@ -1,0 +1,87 @@
+.wrapper {
+  width: 80%;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.header {
+  display: inline-block;
+  width: 100%;
+}
+
+.header * {
+  display: inline;
+}
+
+.logout {
+  float: right;
+  top: 20px;
+  position: relative;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.loginWrapper {
+  width: 45%;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid #eeeeee;
+}
+
+.loginWrapper h2 {
+  margin-bottom: 50px;
+}
+
+form * {
+  display: block;
+}
+
+form input {
+  border: 1px solid #5f5f5f;
+  padding: 16px;
+  margin: 10px 0;
+  width: 90%;
+  border-radius: 10px;
+}
+
+form button {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  padding: 10px;
+  margin-top: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+form button:hover {
+  border: 1px solid #000000;
+}
+
+table {
+  width: 100%;
+  border: 1px solid #000000;
+  margin-top: 10px;
+}
+
+thead {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+thead td {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover {
+  background-color: #eeeeee;
+}
+
+tbody td {
+  padding: 10px;
+}
