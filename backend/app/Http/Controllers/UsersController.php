@@ -240,7 +240,7 @@ class UsersController extends Controller
         return response()->json([
             'success' => true,
             'data' => $data,
-            'token' => $token['access_token'],
+            'token' => $token,
             'error' => null,
             'code' => $code
         ], $code);
