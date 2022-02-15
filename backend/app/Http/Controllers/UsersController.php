@@ -137,13 +137,13 @@ class UsersController extends Controller
 
         $usertransactions = DB::table('accounts')->where('user_id', $userData['user_id'])->orderBy('created_at', 'DESC')->get()->toArray();
 
-        $this->respondWithToken($usertransactions, Auth::user()->access_token, 200);
+        return $this->respondWithToken($usertransactions, Auth::user()->access_token, 200);
     }
 
     public function debit(Request $request) {
         $userData = [
             'user_id' => $request->user_id,
-            'debit' => $request->credit,
+            'debit' => $request->debit,
             'comment' => $request->comment,
             'balance' => $request->balance
         ];
@@ -153,7 +153,7 @@ class UsersController extends Controller
             ->orderBy('created_at', 'DESC')
             ->limit(1)->get();
 
-        if($balTrans->balance < 10) {
+        if($balTrans[0]->balance < 0) {
             return response()->json([
                 'success' => true,
                 'data' => null,
@@ -177,7 +177,7 @@ class UsersController extends Controller
 
             $usertransactions = DB::table('accounts')->where('user_id', $userData['user_id'])->orderBy('created_at', 'DESC')->get()->toArray();
 
-            $this->respondWithToken($usertransactions, Auth::user()->access_token, 200);
+            return $this->respondWithToken($usertransactions, Auth::user()->access_token, 200);
         }
         
     }
@@ -206,7 +206,7 @@ class UsersController extends Controller
     }
 
     public function transactions(Request $request) {
-        $usertransactions = DB::table('accounts')->where('user_id', $request->id)->get()->toArray();
+        $usertransactions = DB::table('accounts')->where('user_id', $request->id)->orderBy('created_at', 'DESC')->get()->toArray();
         $user = DB::table('users')->select('name')->where('id', $request->id)->first();
 
         if($usertransactions) {
