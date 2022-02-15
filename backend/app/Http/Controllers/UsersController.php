@@ -90,10 +90,15 @@ class UsersController extends Controller
 
             if($user->role == 'banker') {
                 $users = User::where('role', 'customer')->get();
-                $data['users'] = $users;
+
+                $data['customers'] = $users;
+                $data['role'] = auth()->user()->role;
             } else {
-                $transactions = DB::table('accounts')->where('user_id', $user->id)->first()->toArray();
+                $transactions = DB::table('accounts')->where('user_id', $user->id)->get();
+
+                $data['user'] = $user;
                 $data['transaction'] = $transactions;
+                $data['role'] = auth()->user()->role;
             }
 
             return $this->respondWithToken($data, $accessToken['access_token'], 200);
@@ -201,21 +206,24 @@ class UsersController extends Controller
     }
 
     public function transactions(Request $request) {
-        $usertransactions = DB::table('accounts')->where('user_id', $request->user_id)->get()->toArray();
+        $usertransactions = DB::table('accounts')->where('user_id', $request->id)->get()->toArray();
+        $user = DB::table('users')->select('name')->where('id', $request->id)->first();
 
         if($usertransactions) {
             return response()->json([
                 'success' => true,
                 'data' => $usertransactions,
-                'token' => auth()->user()->token,
+                'name' => $user->name,
+                'token' => null,
                 'error' => null,
                 'code' => 200
             ], 200);
         } else {
             return response()->json([
                 'success' => true,
-                'data' => "No transactions found.",
-                'token' => auth()->user()->token,
+                'data' => null,
+                'name' => $user->name,
+                'token' => null,
                 'error' => null,
                 'code' => 200
             ], 200);
