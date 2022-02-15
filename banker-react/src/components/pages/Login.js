@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 // import PropTypes from "prop-types";
 
 async function userLogin(credentials) {
-    console.log(credentials)
     return fetch('http://localhost:8000/api/users/login', {
         method: 'POST',
         headers: {
@@ -25,13 +24,18 @@ function Login() {
     const navigate = useNavigate();
 
     useEffect( () => {
-        if( localStorage.getItem('userData') ) {
-            if (JSON.parse(localStorage.getItem('userData')).data.role === 'banker') {
-                navigate('/banker')
-            } else {
-                navigate('/customer')
+        if(localStorage.getItem('token')) {
+            if( localStorage.getItem('userData') ) {
+                if (JSON.parse(localStorage.getItem('userData')).data.role === 'banker') {
+                    navigate('/banker')
+                } else {
+                    navigate('/customer')
+                }
             }
+        } else {
+            navigate('/')
         }
+
     })
 
     const handleSubmit = async (e) => {
@@ -60,14 +64,10 @@ function Login() {
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Email Id" onChange={e => setEmail(e.target.value)} />
                 <input type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-                <button type="submit">Login</button>
+                <button className="loginBtn" type="submit">Login</button>
             </form>
         </div>
     );
 }
 
 export default Login;
-
-// Login.propTypes = {
-//     setToken: PropTypes.func.isRequired
-// }

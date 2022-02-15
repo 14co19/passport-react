@@ -1,3 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  position: relative;
+}
 .wrapper {
   width: 80%;
   margin: 0 auto;
@@ -7,6 +14,9 @@
 .header {
   display: inline-block;
   width: 100%;
+  border-bottom: 1px solid #eeeeee;
+  margin-bottom: 10%;
+  padding-bottom: 10px;
 }
 
 .header * {
@@ -44,7 +54,7 @@ form input {
   border-radius: 10px;
 }
 
-form button {
+.loginBtn {
   width: 90%;
   margin: 50px auto 20px;
   padding: 14px;
@@ -55,8 +65,12 @@ form button {
   border-radius: 10px;
 }
 
-form button:hover {
+.loginBtn:hover {
   border: 1px solid #000000;
+}
+
+.content h2 {
+  margin-bottom: 5%;
 }
 
 table {
@@ -77,6 +91,7 @@ thead td {
 
 tbody tr {
   cursor: pointer;
+  text-align: center;
 }
 
 tbody tr:hover {
@@ -99,6 +114,71 @@ tbody td {
   border: 1px solid #eeeeee;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.modal-container {
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  background: rgba(0,0,0,0.2);
+  z-index: 2;
+}
+
+.modal-content {
+  width: 40%;
+  padding: 18px;
+  margin: 10% auto 0;
+  background-color: #ffffff;
+}
+
+.modal-header {
+  display: inline-block;
+  width: 100%;
+  margin: 10px 0 10%;
+}
+
+.modal-body-content {
+  margin: 0 auto;
+}
+
+.modal-header h3{
+  display: inline;
+}
+
+.modal-header button {
+  float: right;
+  background: none;
+  border: none;
+  font-size: 20px;
+  position: relative;
+  top: -20px;
+  cursor: pointer;
+}
+
+.modal-btns{
+  display: inline-block;
+  width: 98%;
+  margin: 8% auto 0;
+  padding: 5px;
+}
+
+.modalBtn {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  background: none;
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.modalBtn:hover {
+  border: 1px solid #000000;
 }
 
 .btn:hover {

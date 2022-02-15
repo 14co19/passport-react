@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Modal from '../pages/Modal';
 
 async function transApi(credentials) {
-    console.log(credentials)
     return fetch('http://localhost:8000/api/users/transactions', {
         method: 'POST',
         headers: {
@@ -20,6 +20,11 @@ async function transApi(credentials) {
 
 function Customer() {
     const [custTrans, setCustomerTrans] = useState([]);
+    const [modal, setModal] = useState(false);
+    const [bal, setBal] = useState(0);
+
+    const Toggle = () => setModal(!modal)
+
     const navigate = useNavigate()
     
     useEffect( () => {
@@ -32,10 +37,6 @@ function Customer() {
             }
             getTransaction(cust.user.id)
 
-            if(localStorage.getItem('transaction'+cust.user.id)) {
-                let trans = JSON.parse(localStorage.getItem('transaction'+cust.user.id));
-                setCustomerTrans(trans)
-            }
         } else {
             return navigate('/')
         }
@@ -47,13 +48,18 @@ function Customer() {
             console.log(transactions.error)
         } else {
             localStorage.setItem('transaction'+id, JSON.stringify(transactions))
+            setBal(transactions.data[0].balance)
+            setCustomerTrans(transactions.data)
         }
     }
 
     return(
-        <div>
+        <div className="content">
             <h2>Customer Page</h2>
-            <h3>List of Transactions</h3>
+            <div>
+                <h3>List of Transactions</h3>
+                <p>Bal: {bal} Rs.</p>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -65,12 +71,13 @@ function Customer() {
                 </thead>
                 <tbody>
                 {
-                    (custTrans.data !== null && custTrans !== undefined)
+                    (custTrans !== null && custTrans !== undefined)
                     ? (custTrans.map( (item) => {
-                        return <tr onClick={() => getTransaction(item.id)} key={item.id}>
-                                <td>{item.name}</td>
-                                <td>{item.email}</td>
-                                <td>{item.role}</td>
+                        return <tr key={item.id}>
+                                <td>{item.transactions}</td>
+                                <td>{(item.credited) ? item.credited : '-'}</td>
+                                <td>{(item.debited) ? item.debited : '-'}</td>
+                                <td>{item.balance}</td>
                             </tr>
                         })
                     )
@@ -79,9 +86,10 @@ function Customer() {
                 </tbody>
             </table>
             <div className="btns">
-                <button className="btn">Deposit</button>
-                <button className="btn">Withdraw</button>
+                <button className="btn" onClick={() => Toggle()} >Deposit</button>
+                <button className="btn" onClick={() => Toggle()} >Withdraw</button>
             </div>
+            <Modal show={modal} close={Toggle} bal={bal} />
         </div>
     );
 }

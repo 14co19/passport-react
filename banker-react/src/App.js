@@ -19,7 +19,7 @@ function App() {
   }
 
   return (
-    <div className='wrapper'>
+      <>
       <div className='header'>
         <h1>Banker System</h1>
         <span className='logout' onClick={logout}>Logout</span>
@@ -30,7 +30,7 @@ function App() {
           <Route path='/customer' element={<Customer />}></Route>
           <Route path='/customer/transactions/:id' element={<Transaction />}></Route>
         </Routes>
-    </div>
+        </>
   );
 
 }

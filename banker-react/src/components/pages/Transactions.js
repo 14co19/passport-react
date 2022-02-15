@@ -17,7 +17,7 @@ function Transaction() {
 
     return (
         <>
-        <h3>{transData.name} Transactions</h3>
+        <h3>{transData.name} {console.log(transData)} Transactions</h3>
         <Link to={'/banker'} style={{color: '#000000', textDecoration: 'none', margin: '20px 0', fontSize: '16px' }} >Go Back</Link>
         <table>
             <thead>
@@ -33,7 +33,7 @@ function Transaction() {
                 (transData.data !== null && transData.data !== undefined ) 
                 ? (transData.data.map( (item) => {
                     return <tr key={item.id}>
-                        <td>{item.tansactions}</td>
+                        <td>{item.transactions}</td>
                         <td>{item.credited}</td>
                         <td>{item.debited}</td>
                         <td>{item.balance}</td>

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import Transaction from "../pages/Transactions";
 
 async function transApi(credentials) {
-    console.log(credentials)
     return fetch('http://localhost:8000/api/users/transactions', {
         method: 'POST',
         headers: {
@@ -52,7 +50,7 @@ function Banker() {
     }
 
     return(
-        <div>
+        <div className="content">
             <h2>Banker Page</h2>
             <h3>List of Customers</h3>
             <table>
