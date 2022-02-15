@@ -24,10 +24,21 @@ function Banker() {
     const navigate = useNavigate()
 
     useEffect( () => {
-        if(localStorage.getItem('userData')) {
-            let user = JSON.parse(localStorage.getItem('userData'));
-            setCustomer(user.data.customers)
+        const role = JSON.parse(localStorage.getItem('userData')).data.role
+        const token = localStorage.getItem('token')
+        if(token) {
+            if (role !== 'banker') {
+                return navigate('/customer')
+            }
+
+            if(localStorage.getItem('userData')) {
+                let user = JSON.parse(localStorage.getItem('userData'));
+                setCustomer(user.data.customers)
+            }
+        } else {
+            return navigate('/')
         }
+
     },[])
 
     const getTransaction = async (id) => {
@@ -35,14 +46,15 @@ function Banker() {
         if(!transactions.success){
             console.log(transactions.error)
         } else {
-            localStorage.setItem('transanction'+id, JSON.stringify(transactions))
+            localStorage.setItem('transaction'+id, JSON.stringify(transactions))
             navigate(`/customer/transactions/${id}`)
         }
     }
 
     return(
         <div>
-            <h2>Customers</h2>
+            <h2>Banker Page</h2>
+            <h3>List of Customers</h3>
             <table>
                 <thead>
                     <tr>

@@ -12,18 +12,17 @@ function Transaction() {
         if(localStorage.getItem('transaction'+id)) {
             let trans = JSON.parse(localStorage.getItem('transaction'+id));
             setTrans(trans)
-            console.log(trans)
         }
-    },[])
+    }, [])
 
     return (
         <>
-        <h2>{transData.name} Transaction</h2>
+        <h3>{transData.name} Transactions</h3>
         <Link to={'/banker'} style={{color: '#000000', textDecoration: 'none', margin: '20px 0', fontSize: '16px' }} >Go Back</Link>
         <table>
             <thead>
                 <tr>
-                    <td>Transaction</td>
+                    <td>Transactions</td>
                     <td>Deposited</td>
                     <td>Withdrawn</td>
                     <td>Balance</td>
@@ -31,7 +30,7 @@ function Transaction() {
             </thead>
             <tbody>
             {
-                (transData.data === null) 
+                (transData.data !== null && transData.data !== undefined ) 
                 ? (transData.data.map( (item) => {
                     return <tr key={item.id}>
                         <td>{item.tansactions}</td>
@@ -41,7 +40,7 @@ function Transaction() {
                     </tr>
                 })
                 )
-                : (<tr>Transactions Not Found!</tr>)
+                : (<tr><td>Transactions Not Found!</td></tr>)
             }
             </tbody>
         </table>
