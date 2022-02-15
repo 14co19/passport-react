@@ -13,6 +13,9 @@ Clone the repo using below link
 ```link
 https://github.com/14co19/passport-react.git
 ```
+
+Import database bank.sql file into your server
+
 Go to the root folder and open terminal or cmd line
 
 **For Laravel**
