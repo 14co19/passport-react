@@ -36,6 +36,7 @@ async function debit(credentials) {
 function Modal({ show, close , bal }) {
     const [amount, setAmount] = useState();
     const [comment, setComment] = useState();
+    const [error, setError] = useState('');
 
     const navigate = useNavigate();
 
@@ -50,7 +51,10 @@ function Modal({ show, close , bal }) {
             "balance": bal
         });
         if(!transactions.success){
-            console.log(transactions.error)
+            if(transactions.data === null && transactions.data === undefined) {
+                console.log(transactions.error)
+                setError(transactions.error)
+            }
         } else {
             let user = JSON.parse(localStorage.getItem('userData')).data.user
             localStorage.setItem('transaction'+user.id, JSON.stringify(transactions))
@@ -70,7 +74,10 @@ function Modal({ show, close , bal }) {
             "balance": bal
         });
         if(!transactions.success){
-            console.log(transactions.error)
+            if(transactions.data === null && transactions.data === undefined) {
+                console.log(transactions.error)
+                setError(transactions.error)
+            }
         } else {
             let user = JSON.parse(localStorage.getItem('userData')).data.user
             localStorage.setItem('transaction'+user.id, JSON.stringify(transactions))
@@ -93,6 +100,7 @@ function Modal({ show, close , bal }) {
                         <form  >
                             <input type={'number'} placeholder={'Amount'} onChange={e => setAmount(e.target.value)} />
                             <input type={'text'} placeholder={'Comment'} onChange={e => setComment(e.target.value)} />
+                            <span>{(error !== '') ? error : "" } {console.log(error)}</span>
 
                             <div className="modal-btns">
                                 <button onClick={handleCreditSubmit} type="submit" className="modalBtn">Deposit</button>

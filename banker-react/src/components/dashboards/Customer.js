@@ -48,8 +48,10 @@ function Customer() {
             console.log(transactions.error)
         } else {
             localStorage.setItem('transaction'+id, JSON.stringify(transactions))
-            setBal(transactions.data[0].balance)
-            setCustomerTrans(transactions.data)
+            if(transactions.data) {
+                setBal( transactions.data[0].balance )
+                setCustomerTrans(transactions.data)
+            }
         }
     }
 

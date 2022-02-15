@@ -151,35 +151,44 @@ class UsersController extends Controller
         $balTrans = DB::table('accounts')->select('balance')
             ->where('user_id', $userData['user_id'])
             ->orderBy('created_at', 'DESC')
-            ->limit(1)->get();
+            ->limit(1)->first();
 
-        if($balTrans[0]->balance < 0) {
+        if($balTrans) {
+            if($balTrans->balance < $userData) {
+                return response()->json([
+                    'success' => true,
+                    'data' => null,
+                    'token' => null,
+                    'error' => "Insufficient Balance!",
+                    'code' => 422
+                ], 422);
+            } else {
+                $userData['balance'] = $userData['balance']-$userData['debit'];
+    
+                DB::table('accounts')->insert([
+                    'user_id' => $userData['user_id'],
+                    'transactions' => $userData['comment'],
+                    'debited' => $userData['debit'],
+                    'balance' => $userData['balance'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+    
+                // DB::table('accounts')->where('user_id', $userData['user_id'])->update(['balance' => $userData['balance']]);
+    
+                $usertransactions = DB::table('accounts')->where('user_id', $userData['user_id'])->orderBy('created_at', 'DESC')->get()->toArray();
+    
+                return $this->respondWithToken($usertransactions, Auth::user()->access_token, 200);
+            }
+        } else {
             return response()->json([
-                'success' => true,
+                'success' => false,
                 'data' => null,
                 'token' => null,
-                'error' => "Insufficient Balance!",
+                'error' => "No data found",
                 'code' => 422
             ], 422);
-        } else {
-            $userData['balance'] = $userData['balance']-$userData['debit'];
-
-            DB::table('accounts')->insert([
-                'user_id' => $userData['user_id'],
-                'transactions' => $userData['comment'],
-                'debited' => $userData['debit'],
-                'balance' => $userData['balance'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            // DB::table('accounts')->where('user_id', $userData['user_id'])->update(['balance' => $userData['balance']]);
-
-            $usertransactions = DB::table('accounts')->where('user_id', $userData['user_id'])->orderBy('created_at', 'DESC')->get()->toArray();
-
-            return $this->respondWithToken($usertransactions, Auth::user()->access_token, 200);
         }
-        
     }
 
     public function userslist(Request $request) {
