@@ -53,8 +53,6 @@ class UsersController extends Controller
     public function login(Request $request) {
         $data = [];
 
-        \Log::info($request);
-
         $validator = Validator::make($request->all(), [
             'email' => 'required|string',
             'password' => 'required|min:6'
@@ -92,14 +90,10 @@ class UsersController extends Controller
 
             if($user->role == 'banker') {
                 $users = User::where('role', 'customer')->get();
-                $data['customers'] = $users;
-                $data['banker'] = auth()->user();
-                $data['role'] = auth()->user()->role;
+                $data['users'] = $users;
             } else {
-                $transactions = DB::table('accounts')->where('user_id', $user->id)->first();
-                $data['user'] = auth()->user();
+                $transactions = DB::table('accounts')->where('user_id', $user->id)->first()->toArray();
                 $data['transaction'] = $transactions;
-                $data['role'] = auth()->user()->role;
             }
 
             return $this->respondWithToken($data, $accessToken['access_token'], 200);
@@ -213,7 +207,6 @@ class UsersController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $usertransactions,
-                'name' => auth()->user()->name,
                 'token' => auth()->user()->token,
                 'error' => null,
                 'code' => 200
@@ -221,8 +214,7 @@ class UsersController extends Controller
         } else {
             return response()->json([
                 'success' => true,
-                'data' => null,
-                'name' => auth()->user()->name,
+                'data' => "No transactions found.",
                 'token' => auth()->user()->token,
                 'error' => null,
                 'code' => 200
